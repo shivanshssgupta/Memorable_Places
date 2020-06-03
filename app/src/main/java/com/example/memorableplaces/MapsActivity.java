@@ -38,7 +38,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     LocationManager locationManager;
-    LocationListener locationListener;
     Location lastKnownLocation;
     Intent intent;
     LatLng loc=null;
@@ -72,42 +71,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        /*locationListener= new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                LatLng position= new LatLng(location.getLatitude(),location.getLongitude());
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(position).title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position,12));
 
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };*/
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
-            if(loc.latitude==0 && loc.longitude==0) {
+            if(intent.getIntExtra("Number",0)==0) {
                 lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 LatLng lastKnownPosition = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(lastKnownPosition).title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPosition, 12));
             }
             else{
-                mMap.addMarker(new MarkerOptions().position(loc).title("Your Selected Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                mMap.addMarker(new MarkerOptions().position(loc).title(MainActivity.places.get(intent.getIntExtra("Number",0))).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 12));
             }
             //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
@@ -161,7 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED)
             {
-                if(loc.latitude==0 && loc.longitude==0) {
+                if(intent.getIntExtra("Number",0)==0) {
                     lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     LatLng lastKnownPosition = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                     mMap.addMarker(new MarkerOptions().position(lastKnownPosition).title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
@@ -169,7 +144,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
                 }
                 else{
-                    mMap.addMarker(new MarkerOptions().position(loc).title("Your Selected Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    mMap.addMarker(new MarkerOptions().position(loc).title(MainActivity.places.get(intent.getIntExtra("Number",0))).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 12));
                 }
             }

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 if (position != 0) {
                     intent.putExtra("Latitude", locations.get(position).latitude);
                     intent.putExtra("Longitude", locations.get(position).longitude);
-
+                    intent.putExtra("Number",position);
                 }
                 startActivity(intent);
             }
